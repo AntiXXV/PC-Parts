@@ -222,7 +222,7 @@ $('#testformpc').on('change',function(e){
 	var GpuManu = yourSelect.options[ yourSelect.selectedIndex ].value;
 	
 	var prefix = 'PREFIX PC: <http://www.semanticweb.org/PCpart_app#>';
-	var query =  prefix + 'SELECT ?x WHERE {?x a PC:Computer.}';
+	var query =  prefix + 'SELECT ?x WHERE {?x a PC:TestedComputer.}';
 	var endpoint = 'http://localhost:5820/pc-parts/query';
 	var format = 'JSON';
 	
@@ -439,7 +439,7 @@ $('#linktargetpc4').on('change',function(e){
 			ul.addClass('form-control');
 			ul.attr('id','testformpc4');
 			
-			var empty = $('<option value="" disabled selected>Tests</option>');
+			var empty = $('<option value="" disabled selected>Results</option>');
 			ul.append(empty);
 			
 		
@@ -485,3 +485,73 @@ $('#linktargetpc4').on('change',function(e){
 	
 	
 });	
+/////////////////////////////////////////////////////////
+///////////////////////////////////////////game//////////
+
+$('#testformg').on('change',function(e){
+	//get selected option
+	var yourSelect = document.getElementById( "testformg" );
+	var year= yourSelect.options[ yourSelect.selectedIndex ].value;
+	
+	var prefix = 'PREFIX PC: <http://www.semanticweb.org/PCpart_app#>';
+	var query =  prefix + 'SELECT ?x WHERE {?x a PC:Game' + year+ '}';
+	var endpoint = 'http://localhost:5820/pc-parts/query';
+	var format = 'JSON';
+	
+	$.get('/sparql',data={'endpoint': endpoint, 'query': query, 'format': format}, function(json){
+		console.log(json);
+		
+	try {
+			var vars = json.head.vars;
+		
+			var ul = $('<select></select>');
+			ul.addClass('form-control');
+			ul.attr('id','testformg2');
+			
+			var empty = $('<option value="" disabled selected>Game</option>');
+			ul.append(empty);
+			
+		
+			$.each(json.results.bindings, function(index,value){
+				var li = $('<option></option>');
+				li.addClass('list-group-item');
+				
+			
+				$.each(vars, function(index, v){
+					var v_type = value[v]['type'];
+					var v_value = value[v]['value'];
+				
+				
+					// If the value is a URI, create a hyperlink
+					if (v_type == 'uri') {
+						var a = $('<a></a>');
+						a.attr('href',v_value);
+						var object_split = v_value.split('resource/');
+						var object_name = object_split[1];
+						
+						var name = object_name.replace(/[#_]/g,' ');
+						
+						a.text(name);
+						li.append(a);
+					// Else we're just showing the value.
+					} else {
+						li.append(v_value);
+					}
+					li.append('<br/>');
+					
+				});
+				ul.append(li);
+			
+			});
+			
+			$('#linktargetg').html(ul);
+		} catch(err) {
+			$('#linktargetg').html('Something went wrong!');
+		}
+		
+
+		
+	});
+	
+	
+});
