@@ -30,11 +30,9 @@ $('#testform').on('change',function(e){
 			ul.addClass('form-control');
 			ul.attr('id','testform2');
 		
-			var empty = $('<option></option>');
-				empty.addClass('list-group-item');
-				
+			var empty = $('<option value="" disabled selected>Select your videochip</option>');
 			ul.append(empty);
-			
+
 			$.each(json.results.bindings, function(index,value){
 				var li = $('<option></option>');
 				li.addClass('list-group-item');
@@ -103,9 +101,7 @@ $('#linktargetuno').on('change',function(e){
 			ul.addClass('form-control');
 			ul.attr('id','testform3');
 			
-			var empty = $('<option></option>');
-				empty.addClass('list-group-item');
-				
+			var empty = $('<option value="" disabled selected>Select your graphics card</option>');
 			ul.append(empty);
 			
 		
