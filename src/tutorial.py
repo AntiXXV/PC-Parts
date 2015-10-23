@@ -13,7 +13,7 @@ TUTORIAL_REPOSITORY = 'http://localhost:5820/pc-parts/query';
 @app.route('/')
 def first_page():
     app.logger.debug('You arrived at ' + url_for('first_page'))
-    return render_template('index.html')
+    return render_template('test2.html')
 
 
 @app.route('/show',methods=['GET'])
